@@ -30,22 +30,14 @@ class JarViewModel : ViewModel() {
 
     fun fetchData() {
         viewModelScope.launch {
-
-//                try {
-//                    val fetchedItem = repository.fetchResults()
-//                    _listStringData.value = fetchedItem.first()
-//                } catch (e: Exception) {
-//
-//                }
-
-            runBlocking {
-                repository.fetchResults().collect {
-                    _listStringData.value = it
+            try {
+                repository.fetchResults().collect { fetchedItems ->
+                    Log.d("JarViewModel", "Fetched items: $fetchedItems")
+                    _listStringData.value = fetchedItems
                 }
+            } catch (e: Exception) {
+                Log.e("JarViewModel", "Error fetching data: ${e.message}")
             }
         }
-
-        Log.d("List", _listStringData.value.toString())
-
     }
 }
