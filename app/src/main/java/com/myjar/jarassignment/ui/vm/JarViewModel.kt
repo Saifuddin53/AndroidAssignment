@@ -40,4 +40,15 @@ class JarViewModel : ViewModel() {
             }
         }
     }
+
+    fun searchItems(item: String) {
+        if (item.isBlank()) {
+            fetchData()
+            return
+        }
+        viewModelScope.launch {
+            val filteredItems = _listStringData.value.filter { it.name.contains(item, ignoreCase = true) }
+            _listStringData.value = filteredItems
+        }
+    }
 }

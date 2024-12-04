@@ -73,9 +73,12 @@ fun ItemListScreen(
         }
     }
 
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        SearchBar {
+            viewModel.searchItems(it)
+        }
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -89,6 +92,29 @@ fun ItemListScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
+}
+
+@Composable
+fun SearchBar(
+    onSearch: (String) -> Unit
+) {
+    val searchText = remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        androidx.compose.material3.TextField(
+            value = searchText.value,
+            onValueChange = {
+                searchText.value = it
+                onSearch(it)
+                },
+            label = { Text("Search") },
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
